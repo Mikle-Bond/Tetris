@@ -250,6 +250,20 @@ const tetrimino tet_J_map = {
     }
 };
 
+// directions
+enum direction { down, left, up, right };
+
+// offsets to the directions
+struct {
+    char x;
+    char y;
+} offsets[] = {
+    { x =  1, y =  0 },
+    { x =  0, y = -1 },
+    { x = -1, y =  0 },
+    { x =  0, y =  1 }
+};
+
 // list of the particles
 enum tet_num { tet_B, tet_L, tet_J, tet_S, tet_Z, tet_I, tet_T };
 
