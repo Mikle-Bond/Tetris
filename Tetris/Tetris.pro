@@ -4,19 +4,23 @@
 #
 #-------------------------------------------------
 
-QT       += core
+#QT       += core
 
-QT       -= gui
+#QT       -= gui
 
 TARGET = Tetris
 CONFIG   += console
 CONFIG   -= app_bundle
+CONFIG   -= qt
 
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    kernel.cpp
+SOURCES += \
+    kernel.c \
+    main.c
 
 HEADERS += \
-    tetriminos_maps.h
+    tetriminos_maps.h \
+    kernel.h \
+    kernel_types.h
