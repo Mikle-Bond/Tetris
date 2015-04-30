@@ -42,10 +42,10 @@ atom_pixel glob_map[35][12] = { };
 // sevice zone:   [height_T]  [width_L] ..    [4]    [width_R]
 // visible:     [height_T + 4][width_L] .. [height_B][width_R]
 
-#define width_L     1
-#define width_R     10
-#define height_T    1
-#define height_B    32
+const int width_L =     1;
+const int width_R =     10;
+const int height_T =    1;
+const int height_B =    32;
 
 /*
  * global struct for currently avaluable

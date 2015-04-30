@@ -44,9 +44,24 @@ extern void create (tet_num type, direction angle);
 // Rotate the particle
 extern err_move rotate (int side);
 
+// Global matrix
+extern atom_pixel glob_map[35][12];
+/* global matrix 24x10 pixels
+ * plus 4 rows on the top
+ * plus two rows and colums on the bottom-right
+ * plus one row and column on the top-left
+ *
+ * active zone:   [height_T]  [width_L] .. [height_B][width_R]
+ * sevice zone:   [height_T]  [width_L] ..    [4]    [width_R]
+ * visible:     [height_T + 4][width_L] .. [height_B][width_R]
+ */
+
+const int width_L =     1;
+const int width_R =     10;
+const int height_T =    1;
+const int height_B =    32;
 
 /// DBG
-extern atom_pixel glob_map[35][12];
 extern particle curr;
 
 extern void dbg_dump ();
