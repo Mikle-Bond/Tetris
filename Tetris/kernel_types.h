@@ -5,6 +5,9 @@
 // type of single element on map
 typedef unsigned char atom_pixel;
 
+// type of global matrix
+typedef atom_pixel matrix[35][12];
+
 // directions
 typedef enum direction_t { down, left, up, right } direction;
 

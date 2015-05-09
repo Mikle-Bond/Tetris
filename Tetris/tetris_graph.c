@@ -1,12 +1,16 @@
 ﻿#include <stdlib.h>
 #include <GL/glut.h>
 #include "kernel.h"
+
 //#include <GL/glu.h>
+
 
 
 #define DefoultWindowOptions GLUT_RGB|GLUT_DOUBLE
 #define DEFAULT_WINDOW_XSIZE  360
 #define DEFAULT_WINDOW_YSIZE  480
+
+//void (*Timer)();
 
 typedef struct My_Color
 {
@@ -46,15 +50,15 @@ void TsetWinSize(unsigned int x, unsigned int y)
 //======================================================================
 void TsetSquareSize(int x, int y)
 {
-    double Ysize = y / 12.;
-    double Xsize = x / 5.;
+    double Ysize = y / (height_B / 2. + .5);
+    double Xsize = x / (width_R / 2. + .5);
 
     if( Ysize >= Xsize )
         TsquareSize = Xsize;
     else TsquareSize = Ysize;
 }
 //==============Draw square=============================================
-void Tsquare(int x, int y)
+void Tsquare(int y, int x)
 {
 
     glRectf(-1 + (float)((float)x * TsquareSize) / ( Win_SizeX),
@@ -64,18 +68,19 @@ void Tsquare(int x, int y)
     //glRectf(x, y, x + TsquareSize, y + TsquareSize);
 }
 //======================================================================
-void drawSpace (atom_pixel **space)
+void DrawSpace (matrix space)
 {
     int i = 0, j = 0;
     glClear(GL_COLOR_BUFFER_BIT);
-   // for ( ; i < NumCol; i++)
-     //   for (j = 0; j < NumLine; j++)
+
+    for (i = height_T ; i <= height_B; i++)
+        for (j = width_L; j <= width_R; j++)
         {
             if (space[i][j])
             {
-            glColor3f(COLOR[space[i][j]].red / 255.,
-                      COLOR[space[i][j]].green / 255.,
-                      COLOR[space[i][j]].blue / 255.);
+            glColor3f(COLOR[space[i][j] - 1].red / 255.,
+                      COLOR[space[i][j] - 1].green / 255.,
+                      COLOR[space[i][j] - 1].blue / 255.);
             Tsquare(i,j);
             }
         }
@@ -94,18 +99,21 @@ void reshape(int w, int h)
 }
 
 //===========what we need draw==========================================
-void display(void)
+void DrawFrame(void)
 {
-    printf("%i %i \n", x, y);
+    //printf("%i %i \n", x, y);
     glClear(GL_COLOR_BUFFER_BIT);
-
+    /*
     glColor3f(1.0f, 0.0f, 0.0f);
     Tsquare(x, y);
+    */
+
+    DrawSpace(glob_map);
     glFlush();
 }
 
 //===========get interrupt from keyboard================================
-void keyboard(unsigned char key, int a, int b)
+/*void keyboard(unsigned char key, int a, int b)
 {
     switch (key)
     {
@@ -113,35 +121,36 @@ void keyboard(unsigned char key, int a, int b)
         exit(EXIT_SUCCESS);
         break;
     case 'w':
-        if ( y < 23)
-            y+=1;
+        move ( up );
         break;
     case 's':
-        if (y > 0)
-            y-=1;
+        move( down );
         break;
     case 'd':
-        if ( x < 14)
-            x+=1;
+        move( right );
         break;
     case 'a':
-        if (x > 2)
-            x-=1;
+        move( left );
+        break;
+    case ' ':
+        create(tet_T, down);
         break;
     default: break;
 
     }
-    display();
+    dbg_dump();
+    printf("pos: %2d %2d, type: %d", curr.pos.x, curr.pos.y, curr.type);
+    printf("\n\n");
+    DrawFrame();
 }
-
+*/
 //======================================================================
-void TCreateWindow()
+inline void TCreateWindow()
 {
 
     glutCreateWindow("Tetris");
     glutReshapeFunc(&reshape);
-    glutDisplayFunc(&display);
-    glutKeyboardFunc(&keyboard);
+
 }
 
 //===========inicialize glut and functions===============================
@@ -153,7 +162,7 @@ void TInit()
     glutInit(&argc,&argv);
 
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
-    glutInitWindowSize(Win_SizeX,Win_SizeY);
+    glutInitWindowSize(Win_SizeX, Win_SizeY);
     glutInitWindowPosition(100,100);
 
     glClearColor(0.0,0.0,0.0,0.0);
@@ -163,12 +172,32 @@ void TInit()
 
     TCreateWindow();
 
+}
 
+inline void TMainLoop()
+{
     gluOrtho2D(0., 0.,(GLdouble)Win_SizeX, (GLdouble)Win_SizeY);
-
-
-
     glutMainLoop();
 
+}
+
+inline void TDisplay(void (*display)(void))
+{
+    glutDisplayFunc(DrawFrame);
+}
+
+inline void TKeyBoard( void (*kbrd)(unsigned char key, int a, int b) )
+{
+    glutKeyboardFunc(kbrd);
+}
+
+inline void TSpecial(void (*special)(unsigned char key, int a, int b))
+{
+    glutSpecialFunc(special);
+}
+
+inline void TTimer( void (*timer)(int value))
+{
+    glutTimerFunc(TFrameInterval, timer, 0);
 }
 

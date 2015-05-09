@@ -1,4 +1,4 @@
-//=========================================================
+﻿//=========================================================
 // Tetris engine by Mikle_Bond
 //
 // Here is basics functions, which would be called for
@@ -31,29 +31,53 @@ const tetrimino *types[7] = {
     &tet_T_map
 };
 
-/*
- * global matrix 24x10 pixels
+/* global matrix 24x10 pixels
  * plus 4 rows on the top
  * plus two rows and colums on the bottom-right
  * plus one row and column on the top-left
  */
-atom_pixel glob_map[35][12] = { };
+matrix glob_map = { };
 // active zone:   [height_T]  [width_L] .. [height_B][width_R]
 // sevice zone:   [height_T]  [width_L] ..    [4]    [width_R]
 // visible:     [height_T + 4][width_L] .. [height_B][width_R]
 
-const int width_L =     1;
-const int width_R =     10;
-const int height_T =    1;
-const int height_B =    32;
+const int width_L   =   1;
+const int width_R   =   10;
+const int height_T  =   1;
+const int height_B  =   32;
 
-/*
- * global struct for currently avaluable
+/* global struct for currently avaluable
  * particle, with all its parameters
  */
 particle curr;
 
+/* Stuct of stases of each line in the (glob_map).
+ */
+struct row_filler{
+    char r1 : 8;
+    char r2 : 8;
+    char r3 : 8;
+    char r4 : 8;
+} row_index;
+
 //====[ WITERS ]===========================================
+
+// Read (row_index)
+char get_row_state (char number)
+{
+    long mask = 0x1 << number;
+    mask &= *((long *)(&row_index));
+    return !!mask;
+}
+
+// Write (row_index)
+void set_row_state (char number, char value)
+{
+    if (value)
+        *((long *)(&row_index)) |= 0x1 << number;
+    else
+        *((long *)(&row_index)) &= ~(0x1 << number);
+}
 
 // Access (part_map)
 inline atom_pixel part_map (const atom_pixel *map, int i, int j)
@@ -72,6 +96,30 @@ void glob_write (const atom_pixel *map, int x, int y, atom_pixel val)
                 glob_map[x + i][y + j] = val;
             }
         }
+    }
+}
+
+// Deleting row in (glob_map)
+void clear_row (int row)
+{
+    int i = row + height_T;
+    int j;
+    for (; i > height_T + 1; --i) {
+        for (j = width_L; j <= width_R; ++j) {
+            glob_map[i][j] = glob_map[i - 1][j];
+        }
+    }
+    set_row_state(row, 0);
+    //score_increase(line_score);
+}
+
+// Deleting all full rows
+void clear_all_rows ()
+{
+    int i = 0;
+    for (i = 0; i < height_B - height_T; ++i) {
+        if (get_row_state(i))
+            clear_row(i);
     }
 }
 
@@ -186,6 +234,22 @@ inline err_move rtte_check (int angle)
                 angle);
 }
 
+// Check line is full
+void row_check (int row)
+{
+    int i = width_L;
+    row += height_T;
+    while (i <= width_R && glob_map[row][i] != 0) {
+        i += 1;
+    }
+    if (i > width_R) {
+        set_row_state(row - height_T, 1);
+    } else {
+        set_row_state(row - height_T, 0);
+    }
+}
+
+
 //====[ MOVERS ]===========================================
 
 // Moveing according the direction
@@ -291,6 +355,18 @@ err_move rotate (int side)
         }
     }
     return res;
+}
+
+// Place and stabialize (curr)
+void stop_particle ()
+{
+    int i = curr.pos.x - height_T;
+    int p = (curr.pos.x + 3 > height_B ? height_B : curr.pos.x + 3);
+    while (i <= p) {
+        row_check(i);
+    }
+    curr.pos.x = 0;
+    curr.pos.y = 0;
 }
 
 //====[ DEBUG ]============================================

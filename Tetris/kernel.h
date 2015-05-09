@@ -45,7 +45,7 @@ extern void create (tet_num type, direction angle);
 extern err_move rotate (int side);
 
 // Global matrix
-extern atom_pixel glob_map[35][12];
+extern matrix glob_map;
 /* global matrix 24x10 pixels
  * plus 4 rows on the top
  * plus two rows and colums on the bottom-right
@@ -56,10 +56,10 @@ extern atom_pixel glob_map[35][12];
  * visible:     [height_T + 4][width_L] .. [height_B][width_R]
  */
 
-const int width_L =     1;
-const int width_R =     10;
-const int height_T =    1;
-const int height_B =    32;
+extern const int width_L;
+extern const int width_R;
+extern const int height_T;
+extern const int height_B;
 
 /// DBG
 extern particle curr;
