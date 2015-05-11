@@ -1,6 +1,6 @@
 ﻿#ifndef TETRIS_GRAPH
 #define TETRIS_GRAPH
-
+#include "kernel_types.h"
 /*
  * inicialize glut library and graph functions
  * */
@@ -15,7 +15,7 @@ extern void DrawFrame();
  * keyboard function,
  * get interrupt from keyboard with graph symbols
  * */
-extern inline void KeyBoard( void keyboard(unsigned char key, int a, int b) );
+extern inline void TKeyBoard( void (*keyboard)(unsigned char key, int a, int b) );
 /*
  * get interrupt from keyboard with unvisible symbols
  * */

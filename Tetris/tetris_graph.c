@@ -3,7 +3,7 @@
 #include "kernel.h"
 
 //#include <GL/glu.h>
-
+unsigned int TFrameInterval = 166;
 
 
 #define DefoultWindowOptions GLUT_RGB|GLUT_DOUBLE
