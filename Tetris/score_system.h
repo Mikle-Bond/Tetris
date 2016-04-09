@@ -30,5 +30,11 @@ extern void set_score (int value);
 // Get current score
 extern int get_score ();
 
+// Set value of cleared manualy
+extern void set_lines (int value);
+
+// Get current value of the cleared lines
+extern int get_lines ();
+
 #endif // SCORE_SYSTEM_H
 

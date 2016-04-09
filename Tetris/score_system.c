@@ -21,7 +21,7 @@ struct scores_{
     int line[5];
     int hard_drop;
     // to be continued;
-} scores = {10, 100, 150, 200, 300, 20 };
+} scores = { {10, 100, 200, 300, 400}, 20 };
 
 // Set up scores
 void set_values (int place, int one, int two, int three, int four, int drop)
@@ -39,10 +39,15 @@ void set_values (int place, int one, int two, int three, int four, int drop)
 // Listening for events
 void send_event (event e)
 {
-    if (e == line_clear) {
+    switch (e) {
+    case line_clear:
         temp_lines += 1;
-    } else if (e == hard_drop) {
+        break;
+    case hard_drop:
         temp_score += scores.hard_drop;
+        break;
+    default:
+        break;
     }
 }
 
@@ -51,13 +56,15 @@ void apply_score ()
 {
     temp_score += scores.line[temp_lines];
     temp_score *= score_multiplier;
-    if (temp_lines > 0) {
+    if (temp_lines >= 1) {
         score_multiplier += 1;
-        cleared_lines += temp_lines;
+	cleared_lines += temp_lines;    
     } else {
         score_multiplier = 1;
     }
     cleared_score += temp_score;
+    temp_score = 0;
+    temp_lines = 0;
 }
 
 // Set score manualy
@@ -70,4 +77,16 @@ void set_score (int value)
 int get_score ()
 {
     return cleared_score;
+}
+
+// Set value of cleared manualy
+void set_lines (int value)
+{
+    cleared_lines = value;
+}
+
+// Get current value of the cleared lines
+int get_lines ()
+{
+    return cleared_lines;
 }

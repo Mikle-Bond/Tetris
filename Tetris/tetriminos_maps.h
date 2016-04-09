@@ -13,9 +13,9 @@ typedef struct {
 } tetrimino;
 
 // Clear tetrimino
-/*
-const tetrimino clear = {
-    rotation = {
+
+const tetrimino tet_clean_map = {
+    .rotation = {
         {
             { 0, 0, 0, 0 },
             { 0, 0, 0, 0 },
@@ -42,7 +42,6 @@ const tetrimino clear = {
         }
     }
 };
-*/
 
 const tetrimino tet_T_map = {
     .rotation = {
@@ -210,10 +209,10 @@ const tetrimino tet_L_map = {
             { 0, 0, 0, 0 },
         },
         {
-            { 0, 1, 1, 0 },
-            { 0, 0, 1, 0 },
-            { 0, 0, 1, 0 },
-            { 0, 0, 0, 0 }
+            { 0, 0, 0, 0 },
+            { 1, 1, 0, 0 },
+            { 0, 1, 0, 0 },
+            { 0, 1, 0, 0 }
         }
     }
 };
@@ -227,10 +226,10 @@ const tetrimino tet_J_map = {
             { 0, 0, 0, 0 },
         },
         {
+            { 0, 0, 0, 0 },
             { 0, 1, 1, 0 },
             { 0, 1, 0, 0 },
             { 0, 1, 0, 0 },
-            { 0, 0, 0, 0 },
         },
         {
             { 0, 0, 0, 0 },
@@ -239,9 +238,9 @@ const tetrimino tet_J_map = {
             { 0, 0, 0, 0 },
         },
         {
-            { 0, 0, 1, 0 },
-            { 0, 0, 1, 0 },
-            { 0, 1, 1, 0 },
+            { 0, 1, 0, 0 },
+            { 0, 1, 0, 0 },
+            { 1, 1, 0, 0 },
             { 0, 0, 0, 0 }
         }
     }

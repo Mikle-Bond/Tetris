@@ -89,8 +89,13 @@ extern void tet_stop ();
  */
 
 //---------------------------------------------------------
+// Flashing full lines
+extern void flash_full_rows ();
+
+
+//---------------------------------------------------------
 // Deleting all full rows
-extern void clear_all_rows ();
+extern void clear_full_rows ();
 /* Usage:
  *      Deleting all fulfiled rows from the global map.
  *      Should be called only after tet_stop().
@@ -126,6 +131,7 @@ extern row_filler row_index;
 
 /// DBG
 extern void dbg_dump ();
+extern tet_map_t tet_get_map (tet_num type, direction angle);
 
 #endif // KERNEL
 

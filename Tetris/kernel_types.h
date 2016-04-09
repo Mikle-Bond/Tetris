@@ -9,6 +9,9 @@ typedef unsigned char atom_pixel;
 // type of global matrix
 typedef atom_pixel matrix[35][12];
 
+// type of tetrimino map
+typedef const atom_pixel (*tet_map_t)[4];
+
 // directions
 typedef enum direction_t { down, left, up, right } direction;
 
