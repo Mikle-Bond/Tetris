@@ -1,0 +1,11 @@
+# Keep files in CRLF
+*	text=auto
+
+# sources
+*.c 	text eol=crlf
+*.h	text eol=crlf
+
+# Windows librarys
+*.dll	binary
+*.DLL 	binary
+

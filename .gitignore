@@ -1,0 +1,9 @@
+~*
+*.o
+*.exe
+Tetris/Kernel2
+*.pro.user
+*.swp
+.project
+*Makefile*
+
